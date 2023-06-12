@@ -46,3 +46,38 @@ while True:
     if line.startswith("number:"):
         number = line.split(":")[1]
         print("Number pressed:", number)
+        
+ *python updated code (that should send number to webserver
+ 
+ import serial
+ import requests
+
+# Configure the serial connection
+serial_port = "COM3"  # replace with the appropriate serial port
+baud_rate = 9600
+
+# Define the web server URL
+web_server_url = "http://example.com"  # replace with the URL of your web server
+
+# Open the serial connection
+ser = serial.Serial(serial_port, baud_rate)
+
+while True:
+    # Read a line from the serial port
+    line = ser.readline().decode().strip()
+    
+    # Check if the line contains the number
+    if line.startswith("number:"):
+        number = line.split(":")[1]
+        print("Number pressed:", number)
+        
+        # Send the number to the web server
+        payload = {"number": number}  # Create a dictionary with the data to send
+        response = requests.post(web_server_url, data=payload)  # Send a POST request to the web server
+        
+        # Check the response from the web server
+        if response.status_code == 200:
+            print("Number successfully sent to the web server.")
+        else:
+            print("Failed to send the number to the web server.")
+
