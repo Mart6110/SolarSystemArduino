@@ -2,7 +2,7 @@
 #include <IRremote.h>
 
 // Define the IR receiver pin
-const int IR_RECEIVER_PIN = 2;
+const int IR_RECEIVER_PIN = A1;
 
 // Initialize the IR receiver object
 IRrecv irrecv(IR_RECEIVER_PIN);
