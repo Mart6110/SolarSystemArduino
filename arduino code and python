@@ -1,0 +1,48 @@
+//arduino code
+#include <IRremote.h>
+
+// Define the IR receiver pin
+const int IR_RECEIVER_PIN = 2;
+
+// Initialize the IR receiver object
+IRrecv irrecv(IR_RECEIVER_PIN);
+decode_results irData;
+
+void setup() {
+  // Start serial communication
+  Serial.begin(9600);
+  
+  // Initialize the IR receiver
+  irrecv.enableIRIn();
+}
+
+void loop() {
+  if (irrecv.decode(&irData)) {
+    // Send the received number to the PC
+    Serial.print("number:");
+    Serial.println(irData.value, HEX);  // Send the value as hexadecimal for easier identification
+    
+    irrecv.resume();  // Receive the next IR signal
+  }
+}
+
+
+
+*python code
+import serial
+
+# Configure the serial connection
+serial_port = "COM3"  # Replace with the appropriate serial port
+baud_rate = 9600
+
+# Open the serial connection
+ser = serial.Serial(serial_port, baud_rate)
+
+while True:
+    # Read a line from the serial port
+    line = ser.readline().decode().strip()
+    
+    # Check if the line contains the number
+    if line.startswith("number:"):
+        number = line.split(":")[1]
+        print("Number pressed:", number)
