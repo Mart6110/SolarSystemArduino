@@ -47,7 +47,7 @@ while True:
         number = line.split(":")[1]
         print("Number pressed:", number)
         
- *python updated code (that should send number to webserver
+ *python updated code (that should send number to webserver)
  
  import serial
  import requests
