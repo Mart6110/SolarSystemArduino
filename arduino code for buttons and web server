@@ -1,0 +1,183 @@
+
+// arduino code that understands what button is pressed 
+#include <IRremote.h>
+
+#define IR_RECEIVE_PIN A1
+
+#define IR_BUTTON_1 12
+#define IR_BUTTON_2 24
+#define IR_BUTTON_3 94
+#define IR_BUTTON_4 8
+#define IR_BUTTON_5 28
+#define IR_BUTTON_6 90
+#define IR_BUTTON_7 66
+#define IR_BUTTON_8 82
+#define IR_BUTTON_9 0
+#define IR_BUTTON_0 22
+
+void setup() {
+  Serial.begin(9600);
+  IrReceiver.begin(IR_RECEIVE_PIN);
+}
+
+void loop() {
+  if (IrReceiver.decode()) {
+    IrReceiver.resume();
+    int command = IrReceiver.decodedIRData.command;
+    switch (command) {
+      case IR_BUTTON_1: {
+        Serial.println("Pressed on button 1");
+        break;
+      }
+      case IR_BUTTON_2: {
+        Serial.println("Pressed on button 2");
+        break;
+      }
+      case IR_BUTTON_3: {
+        Serial.println("Pressed on button 3");
+        break;
+      }
+      case IR_BUTTON_4: {
+        Serial.println("Pressed on button 4");
+        break;
+      }
+      case IR_BUTTON_5: {
+        Serial.println("Pressed on button 5");
+        break;
+      }
+      case IR_BUTTON_6: {
+        Serial.println("Pressed on button 6");
+        break;
+      }
+      case IR_BUTTON_7: {
+        Serial.println("Pressed on button 7");
+        break;
+      }
+      case IR_BUTTON_8: {
+        Serial.println("Pressed on button 8");
+        break;
+      }
+      case IR_BUTTON_9: {
+        Serial.println("Pressed on button 9");
+        break;
+      }
+      case IR_BUTTON_0: {
+        Serial.println("Pressed on button 0");
+        break;
+      }
+      default: {
+        Serial.println("Button not recognized");
+      }
+    }
+  }
+}
+
+
+
+
+//possible code for sending pressed button to a web server
+#include <IRremote.h>
+#include <HttpClient.h>
+
+#define IR_RECEIVE_PIN A1
+
+#define IR_BUTTON_1 12
+#define IR_BUTTON_2 24
+#define IR_BUTTON_3 94
+#define IR_BUTTON_4 8
+#define IR_BUTTON_5 28
+#define IR_BUTTON_6 90
+#define IR_BUTTON_7 66
+#define IR_BUTTON_8 82
+#define IR_BUTTON_9 0
+#define IR_BUTTON_0 22
+
+const char* serverAddress = "http://your-web-server.com";  // Replace with your web server address
+
+void setup() {
+  Serial.begin(9600);
+  IrReceiver.begin(IR_RECEIVE_PIN);
+}
+
+void loop() {
+  if (IrReceiver.decode()) {
+    IrReceiver.resume();
+    int command = IrReceiver.decodedIRData.command;
+    switch (command) {
+      case IR_BUTTON_1: {
+        sendNumberPressed(1);
+        Serial.println("Pressed on button 1");
+        break;
+      }
+      case IR_BUTTON_2: {
+        sendNumberPressed(2);
+        Serial.println("Pressed on button 2");
+        break;
+      }
+      case IR_BUTTON_3: {
+        sendNumberPressed(3);
+        Serial.println("Pressed on button 3");
+        break;
+      }
+      case IR_BUTTON_4: {
+        sendNumberPressed(4);
+        Serial.println("Pressed on button 4");
+        break;
+      }
+      case IR_BUTTON_5: {
+        sendNumberPressed(5);
+        Serial.println("Pressed on button 5");
+        break;
+      }
+      case IR_BUTTON_6: {
+        sendNumberPressed(6);
+        Serial.println("Pressed on button 6");
+        break;
+      }
+      case IR_BUTTON_7: {
+        sendNumberPressed(7);
+        Serial.println("Pressed on button 7");
+        break;
+      }
+      case IR_BUTTON_8: {
+        sendNumberPressed(8);
+        Serial.println("Pressed on button 8");
+        break;
+      }
+      case IR_BUTTON_9: {
+        sendNumberPressed(9);
+        Serial.println("Pressed on button 9");
+        break;
+      }
+      case IR_BUTTON_0: {
+        sendNumberPressed(0);
+        Serial.println("Pressed on button 0");
+        break;
+      }
+      default: {
+        Serial.println("Button not recognized");
+      }
+    }
+  }
+}
+
+void sendNumberPressed(int number) {
+  HttpClient client;
+  client.beginRequest();
+  client.get(serverAddress);
+  client.sendHeader("Content-Type", "application/json");
+  client.beginBody();
+  client.print("{\"number\": ");
+  client.print(number);
+  client.print("}");
+  client.endRequest();
+
+  int statusCode = client.responseStatusCode();
+  String response = client.responseBody();
+
+  Serial.print("HTTP Status code: ");
+  Serial.println(statusCode);
+  Serial.print("Response: ");
+  Serial.println(response);
+}
+
